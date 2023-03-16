@@ -23,14 +23,27 @@ onMounted( () => {
 </script>
 
 <template>
-  <h2>{{ units }}</h2>
-  <ChangeUnitsSwitch :currentUnit="units" :onChange="changeUnits" />
-  <WatherSearchForm :onSubmit="searchWeather"/>
+  <header>
+    <div class="container">
+      <div class="header-wrapper">
+        <WatherSearchForm :onSubmit="searchWeather"/>
+        <h3>{{ units }}</h3>
+        &nbsp;
+        <ChangeUnitsSwitch :currentUnit="units" :onChange="changeUnits" />
+      </div>
+    </div>
+  </header>
   <WhileLoading v-if="isLoading"/>
   <TheWeather v-if="!isLoading" :weather="weather"/>
   <WeatherHistory :history="locationHistory" />
 </template>
 
 <style scoped>
-
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: var(--c-main);
+}
 </style>

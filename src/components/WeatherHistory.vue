@@ -10,9 +10,10 @@ defineProps<{
   <div class="container">
     <div v-if="history.length > 0" class="wrapper">
       <div :key="weather.id"  v-for="weather in history" class="weather">
-        <span>{{ weather.location }}</span>
-        <span>{{ weather.main }}</span>
-        <img :src="`https://openweathermap.org/img/wn/${weather.iconId}@2x.png`" alt="icon">
+        <span class="weather__info">{{ weather.location }}</span>
+        <span class="weather__info">{{ weather.main }}</span>
+        <span class="weather__info">{{ weather.temp }}</span>
+        <img :src="`https://openweathermap.org/img/wn/${weather.iconId}.png`" alt="icon">
       </div>
     </div>
   </div>
@@ -30,7 +31,10 @@ defineProps<{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
   width: 100%;
+}
+.weather__info{
+  font-size: 1.5rem;
 }
 </style>

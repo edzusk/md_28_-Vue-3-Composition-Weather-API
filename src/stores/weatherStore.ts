@@ -53,7 +53,7 @@ export const useWeatherStore = defineStore('weather', {
     weather: {} as Weather,
     units: 'metric',
     location: 'riga',
-    locationHistory: [] as Weather[],
+    locationHistory: JSON.parse(localStorage.getItem('history') || '[]') as Weather[],
     isLoading: false
   }),
 
@@ -78,16 +78,17 @@ export const useWeatherStore = defineStore('weather', {
             `http://api.openweathermap.org/data/2.5/weather?q=${this.location}&units=${this.units}&APPID=${api_key}`
           )
           .then(({ data }) => {
+            console.log(data)
             if (data.cod !== 200) {
-              throw new Error(data.message)
+              this.isLoading = false
+              throw data.message
             }
-
             this.weather = this.handleResponse(data)
             this.isLoading = false
           })
       } catch (error) {
         this.isLoading = false
-        throw new Error('Something went wrong!')
+        throw ('Something went wrong!')
       }
     },
 
@@ -100,6 +101,7 @@ export const useWeatherStore = defineStore('weather', {
           this.locationHistory.pop()
         }
       }
+      localStorage.setItem('history', JSON.stringify(this.locationHistory))
     },
 
     handleResponse(weatherResponse: WeatherApiResponse) {
