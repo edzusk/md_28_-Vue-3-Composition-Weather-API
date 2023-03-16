@@ -53,7 +53,8 @@ export const useWeatherStore = defineStore('weather', {
     weather: {} as Weather,
     units: 'metric',
     location: 'riga',
-    locationHistory: [] as Weather[]
+    locationHistory: [] as Weather[],
+    isLoading: false
   }),
 
   actions: {
@@ -61,7 +62,7 @@ export const useWeatherStore = defineStore('weather', {
       this.location = location
       this.manageHistory()
       this.getWeather()
-      console.log(this.locationHistory)
+
     },
 
     changeUnits() {
@@ -70,6 +71,7 @@ export const useWeatherStore = defineStore('weather', {
     },
 
     getWeather() {
+      this.isLoading = true
       try {
         axios
           .get<WeatherApiResponse>(
@@ -79,9 +81,12 @@ export const useWeatherStore = defineStore('weather', {
             if (data.cod !== 200) {
               throw new Error(data.message)
             }
+
             this.weather = this.handleResponse(data)
+            this.isLoading = false
           })
       } catch (error) {
+        this.isLoading = false
         throw new Error('Something went wrong!')
       }
     },
